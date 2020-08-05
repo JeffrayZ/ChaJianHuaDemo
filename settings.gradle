@@ -1,0 +1,4 @@
+include ':chajianapp'
+include ':pluginlib'
+include ':app'
+rootProject.name = "ChaJianHuaDemo"
