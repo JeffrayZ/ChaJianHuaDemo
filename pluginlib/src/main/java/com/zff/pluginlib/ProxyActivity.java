@@ -2,19 +2,14 @@ package com.zff.pluginlib;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.loader.ResourcesLoader;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.MotionEvent;
-import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.reflect.Constructor;
 
@@ -63,6 +58,19 @@ public class ProxyActivity extends Activity {
 
 
     @Override
+    public AssetManager getAssets() {
+        return HookManager.getInstance().getAssertManagerObj();
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        String className1 = intent.getStringExtra("className");
+        Intent intent1 = new Intent(this, ProxyActivity.class);
+        intent1.putExtra("className", className1);
+        super.startActivity(intent1);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         pluginObj.onStart();
@@ -93,20 +101,14 @@ public class ProxyActivity extends Activity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        pluginObj.onRestart();
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         pluginObj.onSaveInstanceState(outState);
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        pluginObj.onTouchEvent(event);
-        return super.onTouchEvent(event);
-    }
-
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        pluginObj.onBackPressed();
-//    }
 }

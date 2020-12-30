@@ -22,6 +22,7 @@ public class HookManager {
     private Resources resources;
     private DexClassLoader loader;
     public PackageInfo packageInfo;
+    private AssetManager assertManagerObj;
     private Configuration configuration;
 
     public static HookManager getInstance() {
@@ -83,11 +84,11 @@ public class HookManager {
         // 然后开始加载我们的资源 肯定要使用Resource 但是它是AssetManager创建出来的 就是AssertManager 有一个addAssertPath 这个方法 但是私有的 所有使用反射
         Class<?> assetManagerClass = AssetManager.class;
         try {
-            AssetManager assertManagerObj = (AssetManager) assetManagerClass.newInstance();
+            assertManagerObj = (AssetManager) assetManagerClass.newInstance();
             Method addAssetPathMethod = assetManagerClass.getMethod("addAssetPath", String.class);
             addAssetPathMethod.setAccessible(true);
             addAssetPathMethod.invoke(assertManagerObj, path);
-            configuration =  context.getResources().getConfiguration();
+//            configuration =  context.getResources().getConfiguration();
             //在创建一个Resource
             resources = new Resources(assertManagerObj, context.getResources().getDisplayMetrics(), context.getResources().getConfiguration());
         } catch (Exception e) {
@@ -104,6 +105,10 @@ public class HookManager {
     //插件中的Resource
     public Resources getResource() {
         return resources;
+    }
+
+    public AssetManager getAssertManagerObj() {
+        return assertManagerObj;
     }
 
     public Configuration getConfiguration() {

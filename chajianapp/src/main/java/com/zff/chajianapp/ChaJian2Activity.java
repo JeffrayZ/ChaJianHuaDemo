@@ -6,20 +6,19 @@ import android.widget.Toast;
 
 import com.zff.pluginlib.PluginActivity;
 
-import android.content.Intent;
-
-public class ChaJianActivity extends PluginActivity {
+public class ChaJian2Activity extends PluginActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
         findViewById(R.id.tvChajian).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(that,ChaJian2Activity.class);
-                startActivity(intent);
+                Toast.makeText(that, v.toString(), Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(that,SecondActivity.class);
+//                startActivity(intent);
             }
         });
     }
